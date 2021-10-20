@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#info {
+  position: absolute;
+  top: 2%;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: #ffff00
+}
+
+body {
+  overflow: hidden;
+}
+</style>
+</head>
+
+
+<body>
+<div id="info">倒數計時
+<br>
+<br>
+<button id='pause'>暫停</button>
+<button id='restart'>繼續</button>
+<button id='analog'>analog</button>
+
+<br>
+
+<script src="https://threejs.org/build/three.min.js"></script>
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<script>
+
+var renderer, scene, camera;
+var pointer , clock ,angle = 0 ;
+var tg = 0;
+
+$('#pause').click(function(){
+	tg= 1;
+});
+
+$('#restart').click(function(){
+	tg= 0;
+});
+
+
+init();
+animate();
+
+function init () {
+	
+	renderer = new THREE.WebGLRenderer();
+	document.body.appendChild (renderer.domElement);
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+	renderer.setSize (width, height);
+	
+	renderer.setClearColor (0x3333);
+	
+	scene = new THREE.Scene();
+	camera = new THREE.PerspectiveCamera (35, width/height, 1, 100);
+	camera.position.y = 16;
+	camera.position.z = 40;
+	camera.lookAt (new THREE.Vector3(0,0,0));
+	
+	let controls = new THREE.OrbitControls(camera, renderer.domElement);
+	
+	window.addEventListener('resize', onWindowResize, false);
+	
+	/*var circleGeometry = new THREE.CircleGeometry( 6.2, 100 );
+	var circleMaterial = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var circle = new THREE.Mesh (circleGeometry, circleMaterial);*/
+
+
+                  var circle2Geometry = new THREE.CircleGeometry( 6, 4000 );
+	var circle2Material = new THREE.MeshBasicMaterial(); 
+	var circle2 = new THREE.Mesh (circle2Geometry, circle2Material);
+
+	var boxGeometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var boxMaterial = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box = new THREE.Mesh (boxGeometry, boxMaterial);
+	box.position.set(0,5.5,0);
+
+	var box2Geometry = new THREE.BoxGeometry( 0.3, 4, 0.1 );
+	var box2Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box2 = new THREE.Mesh (box2Geometry, box2Material);
+	box2.position.set(0,1.8,0);
+
+
+                 var box3Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box3Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box3 = new THREE.Mesh (box3Geometry, box3Material);
+	box3.position.set(0,-5.5,0);
+
+                  var box4Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box4Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box4 = new THREE.Mesh (box4Geometry, box4Material);
+                  box4.rotation.z = Math.PI/6;
+	box4.position.set(5.5*Math.cos(Math.PI*4/6),5.5*Math.sin(Math.PI*4/6),0);
+
+                var box5Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box5Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box5 = new THREE.Mesh (box5Geometry, box5Material);
+                  box5.rotation.z = Math.PI/3;
+	box5.position.set(5.5*Math.cos(Math.PI*5/6),5.5*Math.sin(Math.PI*5/6),0);
+
+                 var box6Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box6Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box6 = new THREE.Mesh (box6Geometry, box6Material);
+                  box6.rotation.z = Math.PI/2;
+	box6.position.set(5.5*Math.cos(Math.PI),5.5*Math.sin(Math.PI),0);
+                 
+                 var box7Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box7Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box7 = new THREE.Mesh (box7Geometry, box7Material);
+                  box7.rotation.z = -Math.PI/6;
+	box7.position.set(5.5*Math.cos(Math.PI*-4/6),5.5*Math.sin(Math.PI*-4/6),0);
+
+                  var box8Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box8Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box8 = new THREE.Mesh (box8Geometry, box8Material);
+                  box8.rotation.z = -Math.PI/3;
+	box8.position.set(5.5*Math.cos(Math.PI*-5/6),5.5*Math.sin(Math.PI*-5/6),0);
+
+                  var box9Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box9Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box9 = new THREE.Mesh (box9Geometry, box9Material);
+                  box9.rotation.z = Math.PI/3;
+	box9.position.set(5.5*Math.sin(Math.PI*4/6),5.5*Math.cos(Math.PI*4/6),0);
+
+                 var box10Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box10Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box10 = new THREE.Mesh (box10Geometry, box10Material);
+                  box10.rotation.z = Math.PI/6;
+	box10.position.set(5.5*Math.sin(Math.PI*5/6),5.5*Math.cos(Math.PI*5/6),0);
+
+                 var box11Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box11Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box11 = new THREE.Mesh (box11Geometry, box11Material);
+                  box11.rotation.z = Math.PI/2;
+	box11.position.set(5.5*Math.sin(Math.PI*3/6),5.5*Math.cos(Math.PI*3/6),0);
+
+                 var box12Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box12Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box12 = new THREE.Mesh (box12Geometry, box12Material);
+                  box12.rotation.z = -Math.PI/3;
+	box12.position.set(5.5*Math.sin(Math.PI*2/6),5.5*Math.cos(Math.PI*2/6),0);
+
+
+                 var box13Geometry = new THREE.BoxGeometry( 0.3, 1, 0.1 );
+	var box13Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var box13 = new THREE.Mesh (box13Geometry, box13Material);
+                  box13.rotation.z = -Math.PI/6;
+	box13.position.set(5.5*Math.sin(Math.PI*1/6),5.5*Math.cos(Math.PI*1/6),0);
+
+
+	var circle3Geometry = new THREE.CircleGeometry( 1, 1 );
+	var circle3Material = new THREE.MeshBasicMaterial({color: 0x000000}); 
+	var circle3 = new THREE.Mesh (circle3Geometry, circle3Material);
+	circle3.position.set(0,5.5,0.1);
+	circle3.rotation.z = Math.PI/2;
+	
+	pointer = new THREE.Group();
+	pointer.add( box2);
+	
+	scene.add (box,box3,box4,box5,box6,box7,box8,box9,box10,box11,box12,box13,pointer ,circle2);
+	clock = new THREE.Clock();
+	clock.getDelta();
+}
+
+
+function animate() {
+	
+	var dt = clock.getDelta();
+	
+	if(!tg)angle -= 2*Math.PI*dt/60;
+	//console.log(dt);
+	pointer.rotation.z = -angle;
+	requestAnimationFrame(animate);
+	render();
+	
+}
+
+function render() {
+	
+	renderer.render(scene, camera);
+	
+}
+
+
+function onWindowResize() {
+  
+  var width = window.innerWidth;
+  var height = window.innerHeight;
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height);
+	
+}
+
+</script>
+</body>
+
+</html>
